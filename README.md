@@ -1,5 +1,5 @@
 # ChromeData PHP SDK
-####PHP 7 library for the ChromeData Automotive Description Service (ADS) and ChromeData Incentives APIs
+#### PHP 7 library for the ChromeData Automotive Description Service (ADS) and ChromeData Incentives APIs
 
 ```
 <?php
