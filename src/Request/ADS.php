@@ -9,6 +9,8 @@ use function GuzzleHttp\Promise\each_limit;
 use function GuzzleHttp\Promise\iter_for;
 use GuzzleHttp\Promise\PromiseInterface;
 use Meng\AsyncSoap\Guzzle\Factory;
+use Laminas\Diactoros\RequestFactory;
+use Laminas\Diactoros\StreamFactory;
 
 class ADS extends Request
 {
@@ -37,7 +39,10 @@ class ADS extends Request
     {
         parent::__construct($adapter);
 
-        $this->client = (new Factory())->create(new Client(), static::ADS_ENDPOINT);
+        $factory = new Factory();
+        $this->client = $factory->create( new Client(), new StreamFactory(), new RequestFactory(), static::ADS_ENDPOINT);
+
+
     }
 
     /**
@@ -138,16 +143,16 @@ class ADS extends Request
         $vinLength = strlen($vin);
 
         for ($i = 0; $i < $vinLength; $i++) {
-            if (!is_numeric($vin{$i})) {
-                $sum += $transliterations[$vin{$i}] * $weights[$i];
+            if (!is_numeric($vin[$i])) {
+                $sum += $transliterations[$vin[$i]] * $weights[$i];
             } else {
-                $sum += $vin{$i} * $weights[$i];
+                $sum += $vin[$i] * $weights[$i];
             }
         }
 
         $checkDigit = $sum % 11;
 
-        return ($checkDigit === 10 ? 'x' : $checkDigit) == $vin{8};
+        return ($checkDigit === 10 ? 'x' : $checkDigit) == $vin[8];
     }
 
     /**
